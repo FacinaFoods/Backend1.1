@@ -1,6 +1,7 @@
 import { Model } from "sequelize";
 import db from '.';
 import sequelize from "sequelize";
+import Clients from "./Clients";
 
 class Adresses extends Model {
     declare id: number;
@@ -39,7 +40,7 @@ Adresses.init({
         type: sequelize.STRING(12),
         allowNull: false,
     },
-    clientId: {
+    clientsId: {
       type: sequelize.INTEGER,
       references: {
         model: 'clients',
@@ -55,5 +56,7 @@ Adresses.init({
     timestamps: false,
     underscored: true,
 });
+
+Adresses.belongsTo(Clients, { foreignKey: 'clientsId', as: 'client' });
 
 export default Adresses;
