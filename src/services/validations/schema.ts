@@ -54,5 +54,33 @@ const partialAddress = joi.object({
   clientsId: joi.number().integer().optional(),
 });
 
+const sale = joi.object({
+  clientId: joi.number().integer().required(),
+  sellerId: joi.number().integer().required(),
+  payment: joi.string().optional(),
+  commission: joi.string().optional(),
+  saleDate: joi.date().optional(),
+  totalValue: joi.string().required(),
+  products: joi
+    .array()
+    .items(
+      joi.object({
+        productId: joi.number().integer().required(),
+        quantity: joi.number().integer().min(1).required(),
+      })
+    )
+    .min(1)
+    .required(),
+});
 
-export = { seller, client, address, partialAddress };
+const partialSale = joi.object({
+  clientId: joi.number().integer().optional(),
+  payment: joi.string().max(20).optional(),
+  sellerId: joi.number().integer().optional(),
+  commission: joi.string().max(20).optional(),
+  saleDate: joi.date().optional(),
+  totalValue: joi.string().max(20).optional(),
+});
+
+
+export = { seller, client, address, partialAddress, sale, partialSale };
