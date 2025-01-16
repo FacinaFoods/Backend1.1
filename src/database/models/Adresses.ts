@@ -8,7 +8,7 @@ class Adresses extends Model {
     declare city: string;
     declare uf: string | null;
     declare street: string;
-    declare number: number;
+    declare number: string;
     declare cep: string;
     declare clientId: number
 }
@@ -33,7 +33,7 @@ Adresses.init({
         allowNull: false,
     },
     number: {
-        type: sequelize.SMALLINT,
+        type: sequelize.STRING(20),
         allowNull: false,
     },
     cep: {

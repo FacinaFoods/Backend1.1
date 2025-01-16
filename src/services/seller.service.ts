@@ -1,5 +1,5 @@
 import { ModelStatic } from "sequelize";
-import Sellers from "../database/models/Sellers";
+import Sellers from "../database/models/Users";
 import { BodyLogin, NewSeller } from "../utils/seller.model";
 import md5 from "md5";
 import { resp, respMsg } from "../helpers/resp";
@@ -26,7 +26,7 @@ export default class SellerService {
         if(!user) return respMsg(404, "Email or password invalid!")
 
         const { id, name, level, email } = user
-        const token = sign({ id, name, email, level })
+        const token = sign({ name, email, level })
         return resp(200, { id, name, email, level, token })
     }
 

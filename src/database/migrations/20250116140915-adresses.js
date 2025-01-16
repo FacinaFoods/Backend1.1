@@ -23,13 +23,23 @@ module.exports = {
         allowNull: false,
       },
       number: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.STRING(20),
         allowNull: false,
       },
       cep: {
         type: Sequelize.STRING(12),
         allowNull: false,
-      }
+      },
+      client_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "clients",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
     });
   },
 

@@ -1,6 +1,7 @@
 import { Model } from "sequelize";
 import db from '.'
 import sequelize from "sequelize";
+import Users from "./Users";
 
 class Clients extends Model {
     declare id: number
@@ -8,6 +9,7 @@ class Clients extends Model {
     declare cpfCnpj: string
     declare phone: string
     declare email: string | null
+    declare userId: number
 }
 
 Clients.init({
@@ -32,6 +34,16 @@ Clients.init({
       email: {
         type: sequelize.STRING(30),
         allowNull: true,
+      },
+      userId: {
+        type: sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false,
       }
     }, {
         sequelize: db,
@@ -40,5 +52,7 @@ Clients.init({
         underscored: true,
     }
 )
+
+Clients.belongsTo(Users, { foreignKey: 'userId', as: 'user' });
 
 export default Clients

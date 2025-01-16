@@ -1,5 +1,5 @@
 export interface SellerViews {
-    id: number,
+    id?: number,
     name: string,
     level: string | null,
     email: string,

@@ -1,78 +1,84 @@
+/** @format */
+
 import { Model } from "sequelize";
-import db from '.';
+import db from ".";
 import sequelize from "sequelize";
 import Clients from "./Clients";
-import Sellers from "./Sellers";
+import Sellers from "./Users";
+import Users from "./Users";
 
 class Sales extends Model {
-    declare id: number;
-    declare clientId: number;
-    declare payment: string | null;
-    declare sellerId: number;
-    declare commission: string | null;
-    declare saleDate: Date;
-    declare totalValue: string;
+  declare id: number;
+  declare clientId: number;
+  declare payment: string | null;
+  declare sellerId: number;
+  declare commission: string | null;
+  declare saleDate: Date;
+  declare totalValue: string;
 }
 
-Sales.init({
+Sales.init(
+  {
     id: {
-        type: sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
+      type: sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
     },
     clientId: {
-        type: sequelize.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'clients',
-            key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+      type: sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "clients",
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     payment: {
-        type: sequelize.STRING(20),
-        allowNull: true,
+      type: sequelize.STRING(20),
+      allowNull: true,
     },
-    sellerId: {
-        type: sequelize.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'sellers',
-            key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+    userId: {
+      type: sequelize.INTEGER,
+      references: {
+        model: "users",
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+      allowNull: false,
     },
     commission: {
-        type: sequelize.STRING(20),
-        allowNull: true, 
+      type: sequelize.STRING(20),
+      allowNull: true,
     },
     saleDate: {
-        type: sequelize.DATE,
-        allowNull: false,
-        defaultValue: sequelize.NOW,
+      type: sequelize.DATE,
+      allowNull: false,
+      defaultValue: sequelize.NOW,
     },
     totalValue: {
-        type: sequelize.STRING(20),
-        allowNull: false,
+      type: sequelize.STRING(20),
+      allowNull: false,
     },
-}, {
+  },
+  {
     sequelize: db,
-    tableName: 'sales',
+    tableName: "sales",
     timestamps: false,
     underscored: true,
-});
+  }
+);
 
 Sales.belongsTo(Clients, {
-    foreignKey: 'clientId',
-    as: 'client'
-})
+  foreignKey: "clientId",
+  as: "client",
+});
 
-Sales.belongsTo(Sellers, {
-    foreignKey: 'sellerId',
-    as: 'seller'
-})
+Sales.belongsTo(Users, {
+  foreignKey: "userId",
+  as: "user",
+});
 
 export default Sales;

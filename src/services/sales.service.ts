@@ -3,7 +3,7 @@ import Sales from "../database/models/Sales";
 import ProductSale from "../database/models/ProductSale";
 import Products from "../database/models/Products";
 import Clients from "../database/models/Clients";
-import Sellers from "../database/models/Sellers";
+import Sellers from "../database/models/Users";
 import { resp, respMsg } from "../helpers/resp";
 import db from "../database/models";
 import schema from "../services/validations/schema";

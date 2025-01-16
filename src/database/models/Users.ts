@@ -2,7 +2,7 @@ import { Model } from "sequelize";
 import db from '.';
 import sequelize from "sequelize";
 
-class Sellers extends Model {
+class Users extends Model {
     declare id: number;
     declare name: string;
     declare level: string | null;
@@ -10,7 +10,7 @@ class Sellers extends Model {
     declare password: string;
 }
 
-Sellers.init({
+Users.init({
     id: {
         type: sequelize.INTEGER,
         primaryKey: true,
@@ -36,8 +36,8 @@ Sellers.init({
     },
 }, {
     sequelize: db,
-    tableName: 'sellers',
+    tableName: 'users',
     timestamps: false,
 });
 
-export default Sellers;
+export default Users;

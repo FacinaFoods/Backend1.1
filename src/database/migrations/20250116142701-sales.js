@@ -21,20 +21,22 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+        allowNull: false,
       },
       payment: {
         type: Sequelize.STRING(20),
         allowNull: true,
       },
-      seller_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'sellers',
+          model: 'users',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+        allowNull: false,
       },
       commission: {
         type: Sequelize.STRING(20),
@@ -46,7 +48,7 @@ module.exports = {
         defaultValue: Sequelize.NOW,
       },
       total_value: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING,
         allowNull: false,
       },
     });

@@ -29,6 +29,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
+      },
+      quantity: {
+        type: Sequelize.SMALLINT(15),
+        allowNull: false,
+        defaultValue: 1
       }
     });
   },

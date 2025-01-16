@@ -53,7 +53,7 @@ ProductSale.init({
 Products.belongsToMany(Sales, {
     foreignKey: 'productId',
     otherKey: 'saleId',
-    as: 'salessss',
+    as: 'salesss',
     through: ProductSale
 })
 
