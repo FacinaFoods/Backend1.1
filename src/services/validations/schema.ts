@@ -1,6 +1,6 @@
 import joi from "joi";
 
-const seller = joi.object({
+const user = joi.object({
   name: joi.string().required(),
   level: joi.string(),
   email: joi.string().email().required(),
@@ -83,4 +83,4 @@ const partialSale = joi.object({
 });
 
 
-export = { seller, client, address, partialAddress, sale, partialSale };
+export = { user, client, address, partialAddress, sale, partialSale };

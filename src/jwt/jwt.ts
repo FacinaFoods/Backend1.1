@@ -1,11 +1,12 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
 import 'dotenv/config'
 import { NextFunction, Request, Response } from "express";
-import { SellerViews } from '../utils/seller.model'
+import { UserViews } from '../utils/user.model';
+
 
 const secret = process.env.JWT_SECRET as string
 
-export const sign = (payload: SellerViews) => {
+export const sign = (payload: UserViews) => {
     const jwtConfig: SignOptions = {
         algorithm: 'HS256',
         expiresIn: '2d'

@@ -1,14 +1,14 @@
 import { Router } from "express";
-import sellerRouter from "./sellerRouter";
 import productRouter from "./productRouter";
 import clientRouter from "./clientRouter";
 import addressRouter from "./addressRouter";
 import salesRouter from "./saleRouter";
+import userRouter from "./userRouter";
 
 
 const router = Router()
 
-router.use(sellerRouter)
+router.use(userRouter)
 router.use(productRouter)
 router.use(clientRouter)
 router.use(addressRouter)

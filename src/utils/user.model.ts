@@ -1,8 +1,8 @@
-export interface SellerViews {
+export interface UserViews {
     id?: number,
     name: string,
-    level: string | null,
     email: string,
+    level: string | null,
 }
 
 export interface BodyLogin {
@@ -10,7 +10,7 @@ export interface BodyLogin {
     password: string
 }
 
-export interface NewSeller {
+export interface NewUser {
     name: string,
     level: string | null,
     email: string,

@@ -1,16 +1,17 @@
 import { ModelStatic } from "sequelize";
 import Sellers from "../database/models/Users";
-import { BodyLogin, NewSeller } from "../utils/seller.model";
+import { BodyLogin, NewUser } from "../utils/user.model";
 import md5 from "md5";
 import { resp, respMsg } from "../helpers/resp";
 import { sign } from "../jwt/jwt";
 import schema from "./validations/schema";
+import { password } from "../database/config/database";
 
 
-export default class SellerService {
+export default class UserService {
     private model: ModelStatic<Sellers> = Sellers
 
-    async getAllSellers() {
+    async getAllUsers() {
         const sellers = await this.model.findAll()
         return resp(200, sellers)
     }
@@ -30,16 +31,18 @@ export default class SellerService {
         return resp(200, { id, name, email, level, token })
     }
 
-    async createSeller(seller: NewSeller) {
+    async createUser(user: NewUser) {
         try {
-            const { error } = schema.seller.validate(seller)
+            const hashPass = md5(user.password)
+            const { error } = schema.user.validate(user)
             if (error) {
                 return respMsg(422, error.message)
             }
-            const hashPass = md5(seller.password);
-            const createdSeller = await this.model.create({ ...seller, password: hashPass });
+            const createdUser = await this.model.create({ ...user, password: hashPass});
+
+            const { id, name, level, email } = createdUser
     
-            return resp(201, createdSeller);
+            return resp(201, { id, name, level, email });
         } catch (error) {
             // if (error instanceof UniqueConstraintError) {
                 return respMsg(409, "This email is already associated with another account.");
