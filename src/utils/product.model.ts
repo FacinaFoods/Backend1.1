@@ -8,6 +8,7 @@ export interface ProductView {
   ncm: number | null;
   price: string;
   cost: string | null;
+  userId: number
 }
 
 export interface NewProduct {
@@ -17,6 +18,7 @@ export interface NewProduct {
   ncm?: number | null;
   price: string;
   cost?: string | null;
+  userId: number
 }
 
 export interface UpdateProduct {
@@ -27,4 +29,5 @@ export interface UpdateProduct {
   ncm?: number | null;
   price?: string;
   cost?: string | null;
+  userId: number
 }

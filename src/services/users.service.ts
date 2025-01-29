@@ -1,19 +1,23 @@
 import { ModelStatic } from "sequelize";
-import Sellers from "../database/models/Users";
-import { BodyLogin, NewUser } from "../utils/user.model";
+import { BodyLogin, NewUser, UserFull } from "../utils/user.model";
 import md5 from "md5";
 import { resp, respMsg } from "../helpers/resp";
 import { sign } from "../jwt/jwt";
-import schema from "./validations/schema";
-import { password } from "../database/config/database";
+import Users from "../database/models/Users";
 
 
 export default class UserService {
-    private model: ModelStatic<Sellers> = Sellers
+    private model: ModelStatic<Users> = Users
 
     async getAllUsers() {
-        const sellers = await this.model.findAll()
-        return resp(200, sellers)
+        const users = await this.model.findAll()
+        const sanitizedUsers = users.map(({ id, name, level, email }) => ({
+            id,
+            name,
+            level,
+            email
+        }));
+        return resp(200, sanitizedUsers)
     }
 
     async login(body: BodyLogin){
@@ -27,17 +31,14 @@ export default class UserService {
         if(!user) return respMsg(404, "Email or password invalid!")
 
         const { id, name, level, email } = user
-        const token = sign({ name, email, level })
+        const token = sign({ id, name, email, level })
         return resp(200, { id, name, email, level, token })
     }
 
     async createUser(user: NewUser) {
         try {
             const hashPass = md5(user.password)
-            const { error } = schema.user.validate(user)
-            if (error) {
-                return respMsg(422, error.message)
-            }
+            
             const createdUser = await this.model.create({ ...user, password: hashPass});
 
             const { id, name, level, email } = createdUser

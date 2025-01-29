@@ -4,6 +4,7 @@ import { NewClient } from "../utils/client.model";
 import { resp, respMsg } from "../helpers/resp";
 import schema from "./validations/schema";
 
+
 export default class ClientService {
   private model: ModelStatic<Clients> = Clients;
 
@@ -23,10 +24,6 @@ export default class ClientService {
   }
 
   async createClient(clientData: NewClient) {
-    const { error } = schema.client.validate(clientData);
-    if (error) {
-      return respMsg(422, error.message);
-    }
 
     const clientExists = await this.model.findOne({
       where: {

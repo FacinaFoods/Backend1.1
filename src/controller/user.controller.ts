@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import SellerService from "../services/users.service";
+import { respMsg } from "../helpers/resp";
+import schema from "../services/validations/schema";
 
 
 export default class UserController {
@@ -28,6 +30,11 @@ export default class UserController {
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
+            const { error } = schema.user.validate(req.body)
+            if (error) {
+                res.status(422).json( error.message )
+                return
+            }
             const { status, message } = await this.service.createUser(req.body)
             console.log(req.body)
             

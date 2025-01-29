@@ -3,11 +3,11 @@ import Sales from "../database/models/Sales";
 import ProductSale from "../database/models/ProductSale";
 import Products from "../database/models/Products";
 import Clients from "../database/models/Clients";
-import Sellers from "../database/models/Users";
 import { resp, respMsg } from "../helpers/resp";
 import db from "../database/models";
 import schema from "../services/validations/schema";
 import { SaleData, UpdateSale } from "../utils/sale.model";
+import Users from "../database/models/Users";
 
 export default class SalesService {
   private model: ModelStatic<Sales> = Sales;
@@ -16,7 +16,7 @@ export default class SalesService {
     const sales = await this.model.findAll({
       include: [
         { model: Clients, as: "client" },
-        { model: Sellers, as: "seller" },
+        { model: Users, as: "user" },
         { model: Products, as: "poductsss", through: { attributes: ["quantity"] } },
       ],
     });
@@ -32,24 +32,26 @@ export default class SalesService {
   }
 
   async createSale(saleData: SaleData) {
-    const { error } = schema.sale.validate(saleData);
-    if (error) return respMsg(422, error.message);
 
     const transaction: Transaction = await db.transaction();
     try {
-      const { clientId, sellerId, payment, commission, saleDate, totalValue, products } = saleData;
+      const { clientId, userId, payment, commission, saleDate, totalValue, products } = saleData;
+
+      console.log(saleData)
 
       const sale = await this.model.create(
-        { clientId, sellerId, payment, commission, saleDate, totalValue },
+        { clientId, userId, payment, commission, saleDate, totalValue },
         { transaction }
       );
-
+      
       const productSalesData = products.map((product: any) => ({
         saleId: sale.id,
         productId: product.productId,
         quantity: product.quantity,
       }));
-
+      
+      console.log(productSalesData);
+      
       await ProductSale.bulkCreate(productSalesData, { transaction });
 
       await transaction.commit();

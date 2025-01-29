@@ -1,11 +1,18 @@
+/** @format */
+
 import { NextFunction, Request, Response } from "express";
 import SalesService from "../services/sales.service";
+import schema from "../services/validations/schema";
+import { UserJwt } from "../utils/user.model";
+import { SaleData } from "../utils/sale.model";
+
+interface CustomRequest extends Request {
+  user: UserJwt;
+}
 
 export default class SalesController {
+  private service = new SalesService();
 
-  private service = new SalesService;
-
-  
   async getAllSales(req: Request, res: Response, next: NextFunction) {
     try {
       const { status, message } = await this.service.getAllSales();
@@ -26,8 +33,24 @@ export default class SalesController {
   }
 
   async createSale(req: Request, res: Response, next: NextFunction) {
+    const userId = (req as CustomRequest).user.id;
+    if (!userId) {
+      res.status(400).json({ message: "UserId is required" });
+      return;
+    }
+
+    const saleData: SaleData = {...req.body, userId}
+
+    // console.log(saleData);
+
     try {
-      const { status, message } = await this.service.createSale(req.body);
+      const { error } = schema.sale.validate(saleData);
+      if (error) {
+        res.status(422).json(error.message);
+        return;
+      }
+
+      const { status, message } = await this.service.createSale(saleData);
       res.status(status).json(message);
     } catch (err) {
       next(err);
@@ -37,7 +60,10 @@ export default class SalesController {
   async updateSale(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { status, message } = await this.service.updateSale(Number(id), req.body);
+      const { status, message } = await this.service.updateSale(
+        Number(id),
+        req.body
+      );
       res.status(status).json(message);
     } catch (err) {
       next(err);

@@ -11,4 +11,5 @@ export interface NewClient {
   cpfCnpj: string;
   phone: string;
   email: string | null;
+  userId: number
 }

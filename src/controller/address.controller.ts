@@ -1,5 +1,15 @@
+import { UpdateAddress } from './../utils/adress.model';
+/** @format */
+
 import { Request, Response, NextFunction } from "express";
 import AddressService from "../services/addresses.service";
+import schema from "../services/validations/schema";
+import { UserJwt } from "../utils/user.model";
+import { NewAddress } from "../utils/adress.model";
+
+interface CustomRequest extends Request {
+  user: UserJwt;
+}
 
 export default class AddressController {
   private service = new AddressService();
@@ -25,6 +35,13 @@ export default class AddressController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      const addressData: NewAddress = { ...req.body };
+
+      const { error } = schema.address.validate(addressData);
+      if (error) {
+        res.status(422).json(error.message);
+        return;
+      }
       const { status, message } = await this.service.createAddress(req.body);
       res.status(status).json(message);
     } catch (err) {
@@ -35,8 +52,22 @@ export default class AddressController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { status, message } = await this.service.updateAddress(Number(id), req.body);
+
+      const addressData: UpdateAddress = { ...req.body };
+
+      const { error } = schema.partialAddress.validate(addressData);
+      if (error) {
+        res.status(422).json(error.message);
+        return;
+      }
+
+      const { status, message } = await this.service.updateAddress(
+        Number(id),
+        req.body
+      );
+
       res.status(status).json(message);
+      
     } catch (err) {
       next(err);
     }

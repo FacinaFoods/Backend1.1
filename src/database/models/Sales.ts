@@ -11,7 +11,7 @@ class Sales extends Model {
   declare id: number;
   declare clientId: number;
   declare payment: string | null;
-  declare sellerId: number;
+  declare userId: number;
   declare commission: string | null;
   declare saleDate: Date;
   declare totalValue: string;

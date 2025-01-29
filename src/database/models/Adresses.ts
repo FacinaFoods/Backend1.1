@@ -40,7 +40,7 @@ Adresses.init({
         type: sequelize.STRING(12),
         allowNull: false,
     },
-    clientsId: {
+    clientId: {
       type: sequelize.INTEGER,
       references: {
         model: 'clients',
@@ -57,6 +57,6 @@ Adresses.init({
     underscored: true,
 });
 
-Adresses.belongsTo(Clients, { foreignKey: 'clientsId', as: 'client' });
+Adresses.belongsTo(Clients, { foreignKey: 'clientId', as: 'client' });
 
 export default Adresses;

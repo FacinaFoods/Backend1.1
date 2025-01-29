@@ -5,7 +5,7 @@ export interface SaleProduct {
 
 export interface SaleData {
   clientId: number;
-  sellerId: number;
+  userId: number;
   payment?: string;
   commission?: string;
   saleDate?: Date;
@@ -16,7 +16,7 @@ export interface SaleData {
 export interface UpdateSale {
   clientId?: number;
   payment?: string;
-  sellerId?: number;
+  userId?: number;
   commission?: string;
   saleDate?: Date;
   totalValue?: string;

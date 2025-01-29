@@ -4,5 +4,14 @@ export interface NewAddress {
   street: string;
   number: number;
   cep: string;
-  clientsId: number;
+  clientId: number;
+}
+
+export interface UpdateAddress {
+  city?: string;
+  uf?: string | null;
+  street?: string;
+  number?: number;
+  cep?: string;
+  clientId?: number;
 }

@@ -14,6 +14,7 @@ class Products extends Model {
   declare ncm: number | null;
   declare price: string;
   declare cost: string | null;
+  declare userId: number
 }
 
 Products.init(
@@ -67,6 +68,7 @@ Products.init(
     sequelize: db,
     tableName: "products",
     timestamps: false,
+    underscored: true
   }
 );
 

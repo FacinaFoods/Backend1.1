@@ -13,14 +13,20 @@ export default class AddressService {
       include: {
         model: Clients,
         as: 'client',
-        attributes: ['id', 'name', 'cpfCnpj', 'phone', 'email'],
+        attributes: ['name', 'phone'],
       },
     });
     return resp(200, addresses);
   }
 
   async getAddressById(id: number) {
-    const address = await this.model.findByPk(id);
+    const address = await this.model.findByPk(id, {
+      include: {
+        model: Clients,
+        as: 'client',
+        attributes: ['name', 'phone'],
+      },
+    });
     if (!address) {
       return respMsg(404, "Address not found");
     }
@@ -28,13 +34,10 @@ export default class AddressService {
   }
 
   async createAddress(addressData: NewAddress) {
-    const { error } = schema.address.validate(addressData);
-    if (error) {
-      return respMsg(422, error.message);
-    }
 
     const createdAddress = await this.model.create({ ...addressData });
     return resp(201, createdAddress);
+    
   }
 
   async updateAddress(id: number, updatedData: Partial<NewAddress>) {
